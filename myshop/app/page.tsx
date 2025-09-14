@@ -1,40 +1,62 @@
-import Carousel from "./components/Carousel"
-import ProductCard from "./components/ProductCard"
-import Image from "next/image"
+"use client"
+import React from "react"
+import ProductCard from "../components/ProductCard"
+import MyCarousel from "../components/MyCarousel"
 
 const products = [
 	{
 		id: 1,
-		title: "iPhone 15",
-		image: "/images/iphone.jpg",
-		description: "Latest Apple smartphone",
+		title: "Old TV-1",
+		image: "/images/tv1.webp",
+		description: "",
 		price: 1200,
 	},
 	{
 		id: 2,
-		title: "MacBook Pro",
-		image: "/images/macbook.jpg",
-		description: "Powerful laptop",
-		price: 2500,
+		title: "Old TV-2",
+		image: "/images/tv2.webp",
+		description: "",
+		price: 1300,
 	},
 	{
-		id: 3,
-		title: "AirPods Pro",
-		image: "/images/airpods.jpg",
-		description: "Wireless earbuds",
-		price: 250,
+		id: 2,
+		title: "Old TV-2",
+		image: "/images/tv2.webp",
+		description: "",
+		price: 1300,
+	},
+	{
+		id: 2,
+		title: "Old TV-2",
+		image: "/images/tv2.webp",
+		description: "",
+		price: 1300,
+	},
+	{
+		id: 2,
+		title: "Old TV-2",
+		image: "/images/tv2.webp",
+		description: "",
+		price: 1300,
+	},
+	{
+		id: 2,
+		title: "Old TV-2",
+		image: "/images/tv2.webp",
+		description: "",
+		price: 1300,
 	},
 ]
 
 export default function Home() {
 	return (
-		<div className='p-6'>
-			<Carousel />
-			<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8'>
+		<>
+			<MyCarousel />
+			<div className='grid grid-cols-4 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6'>
 				{products.map((p) => (
 					<ProductCard key={p.id} {...p} />
 				))}
 			</div>
-		</div>
+		</>
 	)
 }
