@@ -1,16 +1,9 @@
 import "./globals.css"
-import type { Metadata } from "next"
-import "./globals.css"
 import "bootstrap/dist/css/bootstrap.min.css"
 import Header from "@/components/Header"
-import { UserProvider } from "@/context/UserContext"
-import { CartProvider } from "@/context/CardContext"
 import Footer from "@/components/Footer"
-
-export const metadata: Metadata = {
-	title: "MyShop",
-	description: "Demo shop with carousel and products",
-}
+import { UserProvider } from "../context/UserContext"
+import { CartProvider } from "../context/CardContext"
 
 export default function RootLayout({
 	children,

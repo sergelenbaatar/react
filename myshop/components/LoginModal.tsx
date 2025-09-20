@@ -1,21 +1,20 @@
 "use client"
 import React, { useState } from "react"
-import { Modal, Button, Form } from "react-bootstrap"
+import Modal from "react-bootstrap/Modal"
+import Button from "react-bootstrap/Button"
+import Form from "react-bootstrap/Form"
 import { useUser } from "../context/UserContext"
 
-type Props = {
-	show: boolean
-	onHide: () => void
-}
+type Props = { show: boolean; onHide: () => void }
 
-const LoginModal: React.FC<Props> = ({ show, onHide }) => {
+const LoginModal = ({ show, onHide }: Props) => {
 	const { login } = useUser()
+	const [name, setName] = useState("")
 	const [email, setEmail] = useState("")
-	const [password, setPassword] = useState("")
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault()
-		login(email, password)
+		login(name, email)
 		onHide()
 	}
 
@@ -27,6 +26,15 @@ const LoginModal: React.FC<Props> = ({ show, onHide }) => {
 			<Modal.Body>
 				<Form onSubmit={handleSubmit}>
 					<Form.Group className='mb-3'>
+						<Form.Label>Name</Form.Label>
+						<Form.Control
+							type='text'
+							value={name}
+							onChange={(e) => setName(e.target.value)}
+							required
+						/>
+					</Form.Group>
+					<Form.Group className='mb-3'>
 						<Form.Label>Email</Form.Label>
 						<Form.Control
 							type='email'
@@ -35,16 +43,7 @@ const LoginModal: React.FC<Props> = ({ show, onHide }) => {
 							required
 						/>
 					</Form.Group>
-					<Form.Group className='mb-3'>
-						<Form.Label>Password</Form.Label>
-						<Form.Control
-							type='password'
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							required
-						/>
-					</Form.Group>
-					<Button type='submit' variant='primary'>
+					<Button type='submit' variant='primary' className='w-full'>
 						Login
 					</Button>
 				</Form>

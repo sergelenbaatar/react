@@ -1,38 +1,43 @@
 "use client"
-import React, { createContext, useContext, ReactNode, useState } from "react"
+import React, { createContext, useContext, useState } from "react"
 
-type CartItem = {
+export type Product = {
 	id: number
 	title: string
+	image: string
+	description: string
 	price: number
-	quantity: number
 }
+
+export type CartItem = Product & { quantity: number }
 
 type CartContextType = {
 	cart: CartItem[]
-	addToCart: (item: Omit<CartItem, "quantity">) => void
+	addToCart: (product: Product) => void
 	removeFromCart: (id: number) => void
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
-export const CartProvider = ({ children }: { children: ReactNode }) => {
+export function CartProvider({ children }: { children: React.ReactNode }) {
 	const [cart, setCart] = useState<CartItem[]>([])
 
-	const addToCart = (item: Omit<CartItem, "quantity">) => {
+	const addToCart = (product: Product) => {
 		setCart((prev) => {
-			const existing = prev.find((i) => i.id === item.id)
+			const existing = prev.find((item) => item.id === product.id)
 			if (existing) {
-				return prev.map((i) =>
-					i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+				return prev.map((item) =>
+					item.id === product.id
+						? { ...item, quantity: item.quantity + 1 }
+						: item
 				)
 			}
-			return [...prev, { ...item, quantity: 1 }]
+			return [...prev, { ...product, quantity: 1 }]
 		})
 	}
 
 	const removeFromCart = (id: number) => {
-		setCart((prev) => prev.filter((i) => i.id !== id))
+		setCart((prev) => prev.filter((item) => item.id !== id))
 	}
 
 	return (
@@ -42,7 +47,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 	)
 }
 
-export const useCart = () => {
+export function useCart() {
 	const context = useContext(CartContext)
 	if (!context) throw new Error("useCart must be used within CartProvider")
 	return context

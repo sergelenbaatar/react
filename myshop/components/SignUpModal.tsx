@@ -1,22 +1,20 @@
 "use client"
 import React, { useState } from "react"
-import { Modal, Button, Form } from "react-bootstrap"
+import Modal from "react-bootstrap/Modal"
+import Button from "react-bootstrap/Button"
+import Form from "react-bootstrap/Form"
 import { useUser } from "../context/UserContext"
 
-type Props = {
-	show: boolean
-	onHide: () => void
-}
+type Props = { show: boolean; onHide: () => void }
 
-const SignUpModal: React.FC<Props> = ({ show, onHide }) => {
-	const { signup } = useUser()
+const SignUpModal = ({ show, onHide }: Props) => {
+	const { login } = useUser()
 	const [name, setName] = useState("")
 	const [email, setEmail] = useState("")
-	const [password, setPassword] = useState("")
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault()
-		signup(name, email, password)
+		login(name, email) // Simple: sign up = login
 		onHide()
 	}
 
@@ -45,16 +43,7 @@ const SignUpModal: React.FC<Props> = ({ show, onHide }) => {
 							required
 						/>
 					</Form.Group>
-					<Form.Group className='mb-3'>
-						<Form.Label>Password</Form.Label>
-						<Form.Control
-							type='password'
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							required
-						/>
-					</Form.Group>
-					<Button type='submit' variant='success'>
+					<Button type='submit' variant='success' className='w-full'>
 						Sign Up
 					</Button>
 				</Form>
