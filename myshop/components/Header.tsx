@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button"
 import SignUpModal from "./SignUpModal"
 import LoginModal from "./LoginModal"
 import { useUser } from "../context/UserContext"
-import { useCart } from "../context/CardContext"
+import { useCart } from "../context/CartContext"
 import CartSidebar from "./CartSidebar"
 
 const Header = () => {
@@ -26,14 +26,14 @@ const Header = () => {
 				className='sticky-top shadow-lg py-3'
 			>
 				<Container>
-					<Navbar.Brand href='/' className='text-white fw-bold text-2xl'>
-						MyShop
+					<Navbar.Brand
+						href='/'
+						className='text-white fw-bold text-2xl flex items-center gap-2'
+					>
+						🛡️MyShop
 					</Navbar.Brand>
 
-					{/* Toggle button for small screens */}
 					<Navbar.Toggle aria-controls='main-navbar' />
-
-					{/* Collapsible menu */}
 					<Navbar.Collapse id='main-navbar'>
 						<Nav className='ms-auto align-items-center'>
 							<Nav.Link href='#products' className='text-white px-3'>
@@ -47,7 +47,10 @@ const Header = () => {
 							</Nav.Link>
 
 							{/* Cart icon with badge */}
-							<div className='position-relative px-3 my-2 my-lg-0'>
+							<div
+								className='position-relative px-3 my-2 my-lg-0 cursor-pointer'
+								onClick={() => setShowCart(true)}
+							>
 								<svg
 									xmlns='http://www.w3.org/2000/svg'
 									width='24'
@@ -102,8 +105,12 @@ const Header = () => {
 				</Container>
 			</Navbar>
 
+			{/* Modals */}
 			<SignUpModal show={showSignUp} onHide={() => setShowSignUp(false)} />
 			<LoginModal show={showLogin} onHide={() => setShowLogin(false)} />
+
+			{/* Cart Sidebar */}
+			<CartSidebar show={showCart} onHide={() => setShowCart(false)} />
 		</>
 	)
 }

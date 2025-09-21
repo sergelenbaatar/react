@@ -9,12 +9,12 @@ type Props = { show: boolean; onHide: () => void }
 
 const LoginModal = ({ show, onHide }: Props) => {
 	const { login } = useUser()
-	const [name, setName] = useState("")
 	const [email, setEmail] = useState("")
+	const [password, setPassword] = useState("")
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault()
-		login(name, email)
+		login(email, password)
 		onHide()
 	}
 
@@ -26,20 +26,20 @@ const LoginModal = ({ show, onHide }: Props) => {
 			<Modal.Body>
 				<Form onSubmit={handleSubmit}>
 					<Form.Group className='mb-3'>
-						<Form.Label>Name</Form.Label>
-						<Form.Control
-							type='text'
-							value={name}
-							onChange={(e) => setName(e.target.value)}
-							required
-						/>
-					</Form.Group>
-					<Form.Group className='mb-3'>
 						<Form.Label>Email</Form.Label>
 						<Form.Control
 							type='email'
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
+							required
+						/>
+					</Form.Group>
+					<Form.Group className='mb-3'>
+						<Form.Label>Password</Form.Label>
+						<Form.Control
+							type='password'
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
 							required
 						/>
 					</Form.Group>

@@ -1,72 +1,60 @@
 "use client"
-import React, {
-	createContext,
-	useContext,
-	useState,
-	ReactNode,
-	useEffect,
-} from "react"
+import React, { createContext, useContext, useState, ReactNode } from "react"
 
 type User = {
 	name: string
+	email: string
 	password: string
 }
 
 type UserContextType = {
 	user: User | null
-	signup: (name: string, password: string) => boolean
-	login: (name: string, password: string) => boolean
+	signUp: (name: string, email: string, password: string) => void
+	login: (email: string, password: string) => void
 	logout: () => void
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined)
 
-export function UserProvider({ children }: { children: ReactNode }) {
-	const [user, setUser] = useState<User | null>(null)
+export const UserProvider = ({ children }: { children: ReactNode }) => {
+	const [users, setUsers] = useState<User[]>([]) // бүртгэгдсэн хэрэглэгчид
+	const [user, setUser] = useState<User | null>(null) // идэвхтэй хэрэглэгч
 
-	useEffect(() => {
-		const savedUser = localStorage.getItem("current_user")
-		if (savedUser) setUser(JSON.parse(savedUser))
-	}, [])
+	const signUp = (name: string, email: string, password: string) => {
+		// Хэрэв email бүртгэлтэй бол алдаа
+		const existing = users.find((u) => u.email === email)
+		if (existing) {
+			alert("This email is already registered!")
+			return
+		}
 
-	const signup = (name: string, password: string) => {
-		const users = JSON.parse(localStorage.getItem("users") || "[]")
-		const exist = users.find((u: User) => u.name === name)
-		if (exist) return false // already exists
-
-		const newUser = { name, password }
-		users.push(newUser)
-		localStorage.setItem("users", JSON.stringify(users))
-		localStorage.setItem("current_user", JSON.stringify(newUser))
-		setUser(newUser)
-		return true
+		const newUser: User = { name, email, password }
+		setUsers((prev) => [...prev, newUser])
+		setUser(newUser) // бүртгэсний дараа автоматаар login
 	}
 
-	const login = (name: string, password: string) => {
-		const users = JSON.parse(localStorage.getItem("users") || "[]")
-		const exist = users.find(
-			(u: User) => u.name === name && u.password === password
+	const login = (email: string, password: string) => {
+		const found = users.find(
+			(u) => u.email === email && u.password === password
 		)
-		if (!exist) return false
-		localStorage.setItem("current_user", JSON.stringify(exist))
-		setUser(exist)
-		return true
+		if (!found) {
+			alert("No user found. Please sign up first or check your credentials.")
+			return
+		}
+		setUser(found)
 	}
 
-	const logout = () => {
-		localStorage.removeItem("current_user")
-		setUser(null)
-	}
+	const logout = () => setUser(null)
 
 	return (
-		<UserContext.Provider value={{ user, signup, login, logout }}>
+		<UserContext.Provider value={{ user, signUp, login, logout }}>
 			{children}
 		</UserContext.Provider>
 	)
 }
 
-export function useUser() {
+export const useUser = () => {
 	const context = useContext(UserContext)
-	if (!context) throw new Error("useUser must be used within UserProvider")
+	if (!context) throw new Error("useUser must be used within a UserProvider")
 	return context
 }

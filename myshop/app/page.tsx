@@ -11,7 +11,7 @@ export default function Home() {
 			<MyCarousel />
 
 			<Container>
-				<div className='p-6 my-4 grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 !gap-[20px]'>
+				<div className='p-6 my-4 grid grid-cols-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 !gap-[20px]'>
 					{products.map((p) => (
 						<div key={p.id} className='flex flex-col'>
 							<ProductCard {...p} />

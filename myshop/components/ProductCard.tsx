@@ -2,10 +2,16 @@
 import React from "react"
 import Card from "react-bootstrap/Card"
 import Button from "react-bootstrap/Button"
-import { useCart, Product } from "../context/CardContext"
+import { useCart, CartItem } from "../context/CartContext"
 import Link from "next/link"
 
-type ProductProps = Product
+type ProductProps = {
+	id: number
+	title: string
+	image: string
+	description: string
+	price: number
+}
 
 const ProductCard: React.FC<ProductProps> = ({
 	id,
@@ -16,6 +22,11 @@ const ProductCard: React.FC<ProductProps> = ({
 }) => {
 	const { addToCart } = useCart()
 
+	const handleAddToCart = () => {
+		const item: CartItem = { id, title, price, quantity: 1 }
+		addToCart({ id, title, price, quantity: 1 })
+	}
+
 	return (
 		<Card
 			className='shadow-lg flex flex-col justify-between hover:scale-105 transition-transform duration-300'
@@ -25,7 +36,7 @@ const ProductCard: React.FC<ProductProps> = ({
 				variant='top'
 				src={image}
 				alt={title}
-				style={{ objectFit: "contain", height: "200px", padding: "10px" }}
+				style={{ objectFit: "contain", height: "300px", padding: "10px" }}
 			/>
 			<Card.Body className='flex flex-col justify-between'>
 				<Card.Title>{title}</Card.Title>
@@ -40,7 +51,7 @@ const ProductCard: React.FC<ProductProps> = ({
 					<Button
 						variant='success'
 						className='flex-1'
-						onClick={() => addToCart({ id, title, image, description, price })}
+						onClick={handleAddToCart}
 					>
 						Add to Cart
 					</Button>

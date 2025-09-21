@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import { UserProvider } from "../context/UserContext"
-import { CartProvider } from "../context/CardContext"
+import { CartProvider } from "../context/CartContext"
 
 export default function RootLayout({
 	children,
