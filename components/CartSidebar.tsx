@@ -5,14 +5,23 @@ import Button from "react-bootstrap/Button"
 import ListGroup from "react-bootstrap/ListGroup"
 import { useCart } from "../context/CartContext"
 
+// Item-ийн type тодорхойлж байна
+interface CartItem {
+	id: number
+	title: string
+	price: number
+	quantity: number
+}
+
 type Props = { show: boolean; onHide: () => void }
 
 const CartSidebar: React.FC<Props> = ({ show, onHide }) => {
 	const { cart, addToCart, removeFromCart, clearCart } = useCart()
 	const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
-	const increaseQuantity = (item) => addToCart({ ...item, quantity: 1 })
-	const decreaseQuantity = (item) => {
+	const increaseQuantity = (item: CartItem) =>
+		addToCart({ ...item, quantity: 1 })
+	const decreaseQuantity = (item: CartItem) => {
 		if (item.quantity > 1) addToCart({ ...item, quantity: -1 })
 		else removeFromCart(item.id)
 	}
@@ -35,7 +44,7 @@ const CartSidebar: React.FC<Props> = ({ show, onHide }) => {
 											<strong>{item.title}</strong>
 											<br />${item.price} each
 										</div>
-										<div className='flex items-center gap-2'>
+										<div className='d-flex align-items-center gap-2'>
 											<Button
 												size='sm'
 												variant='outline-secondary'
